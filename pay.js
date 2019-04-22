@@ -15,8 +15,7 @@ var urluser     = 'https://payjs.cn/api/user';
 var urlinfo     = 'https://payjs.cn/api/info';
 var urlbank     = 'https://payjs.cn/api/bank';
 
-var key = process.env.payjskey;
-
+var key = process.env.PAYJSKEY;
 function toQueryString(obj) {
   return Object.keys(obj).filter(function(key) {
     return key !== 'sign' && obj[key] !== undefined && obj[key] !== '';
@@ -34,7 +33,6 @@ function md5(str) {
   return crypto.createHash('md5').update(str, encoding).digest('hex');
 };
 
-
 function signature(paramss) {
   var params = paramss;
   var strparams = toQueryString(params);  //签名第一步
@@ -45,16 +43,17 @@ function signature(paramss) {
 }
 
 //扫码支付（主扫）
-function native(params,callback) {
-  request.post(urlnative)
-  .send(signature(params))
-  .end(function (err,res) {
-    if(!err){
-      callback(res.body);
-    }else{
-      console.log(err);
-      callback({'return_code':0,'msg':'本地调用出错'});
-    }
+function native(params) {
+  return new Promise((resolve, reject) => {
+    request.post(urlnative)
+      .send(signature(params))
+      .end(function (err,res) {
+        if(!err){
+          resolve(res.body);
+        }else{
+          reject({'return_code':0,'msg':'本地调用出错'});
+        }
+      });
   });
 }
 
