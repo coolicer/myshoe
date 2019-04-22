@@ -45,6 +45,7 @@ function signature(paramss) {
 //扫码支付（主扫）
 function native(params) {
   return new Promise((resolve, reject) => {
+    console.log(params)
     request.post(urlnative)
       .send(signature(params))
       .end(function (err,res) {
