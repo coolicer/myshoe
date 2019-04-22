@@ -51,7 +51,8 @@ router.get('/pay', async (ctx) => {
       // fail
       console.log(res)
     }
-  })
+  });
+  
   // var res = { 
   //   code_url: 'weixin://wxpay/bizpayurl?pr=K97Iklq',
   //   out_trade_no: 1555935780086,
@@ -64,9 +65,11 @@ router.get('/pay', async (ctx) => {
   // };
 })
 
-router.get('/wxcallback', (ctx) => {
-  console.log(ctx)
-  return ctx.body = 'SUCCESS'
+router.post('/wxcallback', (ctx) => {
+  const body = ctx.request.body
+  if (body.return_code === 1) {
+    return ctx.body = 'SUCCESS'
+  }
 })
 
 app
