@@ -8,7 +8,7 @@ const payjs = require('./pay');
 const nunjucks = require('nunjucks');
 const views = require('koa-views');
 const serve = require('koa-static');
-const QRCode = require('qrcode');
+const bodyParser = require('koa-bodyparser');
 app.use(serve('./static'));
 const PORT = 3000;
 const env = new nunjucks.Environment(
@@ -18,7 +18,7 @@ const env = new nunjucks.Environment(
 env.addFilter('shorten', (str, count) => {
   return str.slice(0, count || 10)
 });
-
+app.use(bodyParser());
 app.use(
   views(path.join(__dirname, './views'), {
     options: {
@@ -52,7 +52,7 @@ router.get('/pay', async (ctx) => {
       console.log(res)
     }
   });
-  
+
   // var res = { 
   //   code_url: 'weixin://wxpay/bizpayurl?pr=K97Iklq',
   //   out_trade_no: 1555935780086,
