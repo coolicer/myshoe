@@ -66,7 +66,7 @@ router.get('/pay', async (ctx) => {
 
 router.get('/wxcallback', (ctx) => {
   console.log(ctx)
-  ctx.body = 'SUCCESS'
+  return ctx.body = 'SUCCESS'
 })
 
 app
