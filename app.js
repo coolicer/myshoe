@@ -67,6 +67,7 @@ router.get('/pay', async (ctx) => {
 
 router.post('/wxcallback', (ctx) => {
   const body = ctx.request.body
+  console.log(body)
   if (body.return_code === 1) {
     return ctx.body = 'SUCCESS'
   }
