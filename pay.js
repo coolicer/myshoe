@@ -16,6 +16,7 @@ var urlinfo     = 'https://payjs.cn/api/info';
 var urlbank     = 'https://payjs.cn/api/bank';
 
 var key = process.env.PAYJSKEY;
+
 function toQueryString(obj) {
   return Object.keys(obj).filter(function(key) {
     return key !== 'sign' && obj[key] !== undefined && obj[key] !== '';
