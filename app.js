@@ -65,7 +65,6 @@ router.get('/pay', async (ctx) => {
 
 router.post('/wxcallback', (ctx) => {
   const body = ctx.request.body
-
   const Paid = payjs.notifyCheck({
     total_fee: body.total_fee,
     out_trade_no: body.out_trade_no,
@@ -73,7 +72,7 @@ router.post('/wxcallback', (ctx) => {
     mchid: body.mchid,
     notify_url: 'http://wx.coolicer.com/wxcallback'
   });
-  console.log(body);
+  
   if (!Paid) {
     ctx.set('Content-Type', 'application/json');
     return ctx.body = 'fail';
