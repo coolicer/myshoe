@@ -36,8 +36,6 @@ router.get('/', (ctx, next) => {
 
 router.get('/pay', async (ctx) => {
   return payjs.native({
-    attach: "自定义数据",
-    body: "订单标题",
     total_fee: 1,
     out_trade_no: Date.now(),
     mchid: process.env.MCHID,
@@ -67,7 +65,21 @@ router.get('/pay', async (ctx) => {
 
 router.post('/wxcallback', (ctx) => {
   const body = ctx.request.body
+
+  const Paid = payjs.notifyCheck({
+    total_fee: body.total_fee,
+    out_trade_no: body.out_trade_no,
+    sign: body.sign,
+    mchid: body.mchid,
+    notify_url: 'http://wx.coolicer.com/wxcallback'
+  });
+  console.log(body);
+  if (!Paid) {
+    ctx.set('Content-Type', 'application/json');
+    return ctx.body = 'fail';
+  }
   if (body.return_code === 1) {
+    ctx.set('Content-Type', 'application/json');
     return ctx.body = 'success'
   }
 })
