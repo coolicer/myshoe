@@ -71,7 +71,7 @@ router.post('/wxcallback', (ctx) => {
     return ctx.body = 'fail';
   }
   if (body.return_code === 1) {
-    fs.writeFileSync('./log', JSON.stringify(params), {flag: 'a'});
+    fs.writeFileSync('/home/myshop/log.txt', JSON.stringify(params), {flag: 'a'});
     ctx.set('Content-Type', 'application/json');
     return ctx.body = 'success'
   }
