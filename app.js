@@ -1,5 +1,6 @@
 require('dotenv').config()
 const path = require('path');
+const fs = require('fs');
 const Koa = require('koa');
 const Router = require('koa-router');
 const app = new Koa();
@@ -56,19 +57,21 @@ router.get('/pay', async (ctx) => {
 
 router.post('/wxcallback', (ctx) => {
   const body = ctx.request.body
-  const Paid = payjs.notifyCheck({
+  const params = {
     total_fee: body.total_fee,
     out_trade_no: body.out_trade_no,
     sign: body.sign,
     mchid: body.mchid,
     notify_url: 'http://wx.coolicer.com/wxcallback'
-  });
+  }
+  const Paid = payjs.notifyCheck(params);
   
   if (!Paid) {
     ctx.set('Content-Type', 'application/json');
     return ctx.body = 'fail';
   }
   if (body.return_code === 1) {
+    fs.writeFileSync('./log', JSON.stringify(params), {flag: 'a'});
     ctx.set('Content-Type', 'application/json');
     return ctx.body = 'success'
   }
